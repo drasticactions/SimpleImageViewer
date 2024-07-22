@@ -4,14 +4,18 @@ import UIKit
 public typealias ImageCompletion = (UIImage?) -> Void
 public typealias ImageBlock = (@escaping ImageCompletion) -> Void
 
-public final class ImageViewerConfiguration {
+@objc(ImageViewerConfiguration)
+public final class ImageViewerConfiguration : NSObject {
+    @objc(image)
     public var image: UIImage?
+    @objc(imageView)
     public var imageView: UIImageView?
     public var imageBlock: ImageBlock?
     
     public typealias ConfigurationClosure = (ImageViewerConfiguration) -> ()
     
-    public init(configurationClosure: ConfigurationClosure) {
+    @objc public init(configurationClosure: ConfigurationClosure) {
+        super.init()
         configurationClosure(self)
     }
 }

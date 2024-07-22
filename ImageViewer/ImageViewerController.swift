@@ -1,7 +1,8 @@
 import UIKit
 import AVFoundation
 
-public final class ImageViewerController: UIViewController {
+@objc(ImageViewerController)
+public class ImageViewerController: UIViewController, UIScrollViewDelegate,UIGestureRecognizerDelegate  {
     @IBOutlet fileprivate var scrollView: UIScrollView!
     @IBOutlet fileprivate var imageView: UIImageView!
     @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
@@ -13,7 +14,7 @@ public final class ImageViewerController: UIViewController {
         return true
     }
     
-    public init(configuration: ImageViewerConfiguration?) {
+    @objc public init(configuration: ImageViewerConfiguration?) {
         self.configuration = configuration
         super.init(nibName: String(describing: type(of: self)), bundle: Bundle(for: type(of: self)))
         
@@ -35,9 +36,7 @@ public final class ImageViewerController: UIViewController {
         setupTransitions()
         setupActivityIndicator()
     }
-}
-
-extension ImageViewerController: UIScrollViewDelegate {
+    
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
@@ -49,15 +48,13 @@ extension ImageViewerController: UIScrollViewDelegate {
         let horizontalInsets = -(scrollView.contentSize.width - max(imageViewSize.width, scrollView.bounds.width)) / 2
         scrollView.contentInset = UIEdgeInsets(top: verticalInsets, left: horizontalInsets, bottom: verticalInsets, right: horizontalInsets)
     }
-}
-
-extension ImageViewerController: UIGestureRecognizerDelegate {
+    
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return scrollView.zoomScale == scrollView.minimumZoomScale
     }
 }
 
-private extension ImageViewerController {
+extension ImageViewerController {
     func setupScrollView() {
         scrollView.decelerationRate = UIScrollView.DecelerationRate.fast
         scrollView.alwaysBounceVertical = true
@@ -142,4 +139,3 @@ private extension ImageViewerController {
         }
     }
 }
-
